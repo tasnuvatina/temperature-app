@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id ="city-input" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="city-submit" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="weather-img" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="city-name" >Dhaka</h1>
+            <h3 ><span id="city-temperature">38.06</span>&deg;C</h3>
+            <h1 id="city-atmosphere" class="lead">Clouds</h1>
+        </div>
+    </div>
+
+
+
+    <script>
+        /********************getting html elements **********************/
+        let cityInput=document.getElementById("city-input");
+        let citySubmit =document.getElementById("city-submit");
+        let weatherImage= document.getElementById("weather-img");
+        let cityName =document.getElementById("city-name");
+        let cityTemperature =document.getElementById("city-temperature");
+        let cityAtmosphere =document.getElementById("city-atmosphere");
+
+        /********************adding button eventlistener **********************/
+        citySubmit.addEventListener("click",function(){
+            let city =cityInput.value;
+            getWeather(city);
+        })
+
+        /********************function to get weather **********************/
+        const getWeather = (city) => {
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=a6ca97c138828883c3233ec3c6b05011`;
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                let image =data.weather[0].icon;
+                weatherImage.src=`https://openweathermap.org/img/wn/${image}@2x.png`
+                cityName.innerText=data.name
+                cityTemperature.innerText=data.main.temp;
+                cityAtmosphere.innerText=data.weather[0].main;     
+            })
+        }
+        
+    </script>
+</body>
+
+</html>
